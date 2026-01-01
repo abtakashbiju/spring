@@ -4,21 +4,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 @RestController
 public class Controller {
 
-    String name;
+    public final NameRepository nameRepository;
+
+    public Controller(NameRepository nameRepository){
+        this.nameRepository = nameRepository;
+    }
 
     @GetMapping("/")
-    public String sayHello(){
-        return(name);
+    public List<Name> sayHello(){
+        return(nameRepository.findAll());
     }
 
     @PostMapping("/post")
-    public String addName(@RequestBody String name){
-        this.name = name;
-        return name;
+    public void addName(@RequestBody String x){
+        Name name = new Name();
+        name.setName(x);
+        nameRepository.save(name);
     }
 
 }
