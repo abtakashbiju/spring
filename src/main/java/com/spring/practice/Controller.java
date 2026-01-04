@@ -9,21 +9,23 @@ import java.util.List;
 @RestController
 public class Controller {
 
-    public final ShowRepository showRepository;
+    private ShowRepository showRepository;
 
     public Controller(ShowRepository showRepository){
         this.showRepository = showRepository;
     }
 
-    @PostMapping("/addShow")
-    public String addShow(@RequestBody Show send){
-        showRepository.save(send);
-        return("Show added " + send.getShowName());
+    @PostMapping("/post")
+    public void addShow(@RequestBody Show show){
+        Show s = new Show();
+        s = show;
+        s.setSeason(s.addSeasons(s.getSeasons()));
+
+        showRepository.save(s);
     }
 
-    @GetMapping("/availableShows")
-    public List<Show> getAllShows(){
+    @GetMapping("/get")
+    public List<Show> getShows(){
         return(showRepository.findAll());
     }
-
 }
